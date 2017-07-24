@@ -1,0 +1,25 @@
+---
+title: "exercicio_Aula3"
+author: "Wilkner"
+date: "24 de julho de 2017"
+output: ioslides_presentation
+---
+
+## Exercício - Aula 3
+Imagine que você possui a seguinte string que é a parte final de uma URL:
+`/ac/rio-branco/xpto-xyz-1-0-1fds2396-5`. Você precisa transformá-la em 'AC - Rio Branco'.
+
+```{r cars, echo = TRUE}
+library(stringr)
+s <- '/ac/rio-branco/xpto-xyz-1-0-1fds2396-5'
+UF <- s %>% str_to_upper() %>%
+            str_split("word")  %>%
+            str_extract("AC")
+cidade <- s %>% str_replace_all("[\\,/,-]", " ")   %>%
+            str_to_upper() %>%
+            str_extract("RIO BRANCO") %>%
+            str_to_title()
+str_c(UF, " - ", cidade)
+```
+
+
