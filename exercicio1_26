@@ -1,0 +1,69 @@
+## Exercício - Desenvolvimento em dois períodos
+
+Obtenha:
+
+- As médias de expectativa da vida e de renda per capita dos municípios de São Paulo antes e depois de 2010. Elas mudaram?
+
+```{r}
+ate_2010 <- pnud_min %>% 
+  dplyr::filter(uf == "SP", ano == 2010) %>% 
+  dplyr::summarise(expectativa_de_vida_media = mean(espvida), expectativa_renda = mean(rdpc))
+
+apos_2010 <- pnud_min %>% 
+  dplyr::filter(uf == "SP", ano > 2010) %>% 
+  dplyr::summarise(expectativa_de_vida_media = mean(espvida), expectativa_renda = mean(rdpc))
+
+ate_2010 
+apos_2010
+  
+```
+- As médias de expectativa de vida e de renda per capita antes e depois de 2005 para o município com o menor IDH relativo a educação. Elas mudaram?
+
+```{r}
+
+## Ate 2005
+
+menor_idh_2005 <- pnud_min %>% 
+                     dplyr::select(muni, idhm_e, ano, espvida, rdpc) %>% 
+                     dplyr::filter(idhm_e == last(idhm_e))
+
+menor_idh_2005
+
+municipio_idh <- menor_idh_2005 %>% 
+                 dplyr::select(muni)
+
+media_menor_idh <- menor_idh_2005 %>% 
+                   dplyr::filter(muni == municipio_idh) %>% 
+ dplyr::summarise(expectativa_de_vida_media = mean(espvida), expectativa_renda = mean(rdpc))
+
+## Apos 2005
+
+apos_2005 <- pnud_min %>% 
+                     dplyr::select(muni, idhm_e, ano, espvida, rdpc) %>% 
+                     dplyr::filter(idhm_e == last(idhm_e), ano > 2005)
+
+apos_2005
+
+municipio_idh_pos <- apos_2005 %>% 
+                 dplyr::select(muni)
+
+media_menor_idh_2005 <- apos_2005 %>% 
+                   dplyr::filter(muni == municipio_idh_pos) %>% 
+ dplyr::summarise(expectativa_de_vida_media = mean(espvida), expectativa_renda = mean(rdpc))
+
+
+## Ate 2005
+media_menor_idh
+
+## Apos 2005
+media_menor_idh_2005
+
+```
+
+- A média do índice de Gini para municípios que mencionam algum santo.
+
+```{r}
+santo <- pnud_min %>% 
+         dplyr::select(muni, idhm_e, ano, espvida, rdpc) %>% 
+         dplyr::FIL
+
